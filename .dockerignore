@@ -1,0 +1,13 @@
+# Compiled Python files
+*.pyc
+
+env/
+
+# Folders
+.idea/
+.vscode/
+.elasticbeanstalk/
+
+# Python
+**/__pycache__/
+*.pyc
