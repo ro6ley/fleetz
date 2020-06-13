@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% load socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+{% block content %}
+
+<div class="jumbotron jumbotron-fluid mt-2 bg-transparent">
+  <div class="container">
+    <h1 class="display-4">Fleetz .:!:.</h1>
+    <p class="lead">
+      Fleetz is a bot that makes tweets disappear after 24 hours (-ish) just like stories on  other platforms.
+    </p>
+    <hr class="my-4">
+
+    <div class="card-deck">
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text">
+            Unlike stories other platforms, Fleetz allows you to configure how long a posted tweet stays up on Twitter. 
+          </p>
+          <p class="card-text">
+            By default, the bot will delete any tweets that has any of the triggers as the trailing character after 24 hours and 24 minutes. 
+          </p>
+        </div>
+      </div>
+
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text">
+            It periodically fetches your tweets in batches and checks for any trigger characters at the end of the tweet.
+          </p>
+          <p class="card-text">
+            These triggers are the last character of a tweet and can be any character or emoji, apart from a pipe character(<strong>&nbsp;|&nbsp;</strong>).
+          </p>
+        </div>
+      </div>
+    
+      <div class="card mb-3">
+        <div class="card-body">
+          <p class="card-text">
+            This duration before a tweet is deleted is configurable in the profile page.
+          </p>
+          <p class="card-text">
+            On the same page, you also be able to see any tweets that are scheduled for deletion, when they will be deleted, and 
+            you can unschedule a Tweet to avoid it's deletion.
+          </p>
+        </div>
+      </div>
+    
+    </div>
+
+    <hr class="my-4">
+
+    {% if user.is_authenticated %}
+
+      <a class="btn btn-primary btn-md float-right" href="https://github.com/ro6ley/fleetz" role="button">Learn more</a>
+
+    {% else %}
+
+      {% if socialaccount_providers %}
+        {% for provider in socialaccount_providers %}
+          {% if provider.id == "twitter" %}
+            <a title="{{provider.name}}" class="btn btn-primary btn-md float-right socialaccount_provider {{provider.id}}" href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+              Log In with {{provider.name}} <i class="fas fa-sign-in-alt"></i>
+            </a>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+  {% endif %}
+  </div>
+</div>
+
+{% endblock %}

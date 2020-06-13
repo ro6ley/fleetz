@@ -1,0 +1,24 @@
+@import 'bootstrap_overrides';
+
+@import 'lib/bootstrap-4.5.0/scss/bootstrap';
+
+/* Sticky footer
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px !important;
+}
+
+.footer {
+  padding-top: 2rem;
+  position: fixed;
+  bottom: 0;
+  height: 60px;
+  width: 100%;
+  line-height: 30px;
+  background-color: #f5f5f5;
+}

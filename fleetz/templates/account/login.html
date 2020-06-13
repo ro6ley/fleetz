@@ -1,0 +1,27 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+  {% get_providers as socialaccount_providers %}
+
+  {% if socialaccount_providers %}
+    {% for provider in socialaccount_providers %}
+      {% if provider.id == "twitter" %}
+      <div class="row">
+        <div class="col-lg-3 center">
+          <a title="{{provider.name}}" class="btn btn-primary btn-md socialaccount_provider {{provider.id}}"  href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+            Log In with {{provider.name}} <i class="fas fa-sign-in-alt"></i>
+          </a>
+        </div>
+      </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,11 @@
+<!-- Display s single tweet in the scheduled tweets section -->
+<div class="list-group-item list-group-item-action">
+    <div class="d-flex w-100 justify-content-between">
+        <h6 class="mb-1">{{ tweet.user.name }} <span class="text-muted">@{{ tweet.user.screen_name }}</span></h6>
+        <a href="https://twitter.com/{{ tweet.user.screen_name }}/status/{{ tweet.id_str }}" target="_blank"><small class="text-muted time">{{ tweet.created_at }}</small></a>
+    </div>
+
+    <p>{{ tweet.text }}</p>
+
+    <small class="text-muted">To be deleted on: <span class="time">{{ tweet.deleted_at }}</span></small>  <a href="{% url 'unschedule' tweet_id=tweet.id %}" class="badge badge-danger float-right col-lg-3" data-confirm="Are you sure you want to unschedule this tweet from being deleted?">Unschedule</a>
+</div>

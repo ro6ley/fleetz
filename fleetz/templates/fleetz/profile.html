@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block content %}
+
+  <div class="row mt-2 mb-2">
+    <div class="mx-auto col-lg-6">
+
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">Edit Your Profile</h4>
+        </div>
+
+        <div class="card-body">
+          <form class="form" method="POST" action="/profile/" role="form" autocomplete="off">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col d-flex align-items-center justify-content-center">
+                <div class="media">
+                  <img src="{{ user_extra_data.profile_picture_url }}" class="img-thumbnail rounded-circle mr-3"/>
+                  <div class="media-body">
+                    <h5 class="mt-0">{{ user_extra_data.twitter_name }}</h5>
+                    <span class="text-muted">@{{ user_extra_data.twitter_username }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group row">
+              <label for="id_triggers" class="col-lg-3 col-form-label form-control-label">Triggers:</label>
+              <div class="col-lg-9">
+                <input class="form-control" type="text" name="triggers" value="{{ user_extra_data.triggers }}" maxlength="100" required id="id_triggers" aria-describedby="triggersHelpBlock">
+                <small id="triggerHelpBlock" class="form-text text-muted">
+                  Enter up to five(5) alphanumeric characters or symbols or emojis separated by pipe characters (<strong>&nbsp;|&nbsp;</strong>) to tag tweets for deletion, words will be ignored.
+                  These triggers should be the last character of the tweets you want to tag for deletion after the elapsed time set above.
+                  Default value is an asterisk(*).
+
+                  <br><br>
+
+                  For example, if you have the following triggers: <mark>*|😑|🤣</mark>; any tweet that ends in either
+                  <mark>*</mark> or <mark>😑</mark> or <mark>🤣</mark> will be deleted after the duration set below.
+                </small>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-lg3">
+
+              </div>
+
+            </div>
+
+            <div class="form-group row">
+              <label for="duration_row" class="col-lg-3 col-form-label form-control-label" aria-describedby="durationHelpBlock">Duration:</label>
+              <div class="col-lg-9">
+
+                <div class="form-row" id="duration_row">
+                  <div class="form-group col-md-6">
+                    <label for="id_hours"><small>Hours</small></label>
+                    <input class="form-control" type="number" name="hours" value="{{ user_extra_data.hours }}" id="id_hours">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="id_minutes"><small>Minutes</small></label>
+                    <input class="form-control" type="number" name="minutes" value="{{ user_extra_data.minutes }}" id="id_minutes">
+                  </div>
+                </div>
+
+                <small id="durationHelpBlock" class="form-text text-muted">
+                  Enter the duration in hours after which the tweet will be deleted. This is relative to the time the tweet was posted.
+                  By default the bot will delete a tagged tweet 24 hours and 24 minutes after it was posted.
+                </small>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-lg-3 col-form-label form-control-label"></label>
+              <div class="col-lg-9 float-right">
+                <a class="btn btn-secondary" href="{% url 'home' %}">Cancel</a>
+                <input type="submit" class="btn btn-primary float-right" value="Save Changes">
+              </div>
+            </div>
+
+          </form>
+
+          <p class="text-center"><strong>You are all set now, you can get back tweeting.</strong></p>
+
+          <hr/>
+
+          <p>If you wish to disconnect this app from your Twitter account, 
+            click the button below. This will delete you account on Fleetz then
+            redirect you to Twitter where you can revoke Fleetz from accessing
+            your account in the future.</p>
+          <p>Click on <span class="text-danger">Revoke access</span> 
+            in the page that opens to complete the process.</p>
+          <p>You can always sign in with Twitter to rejoin Fleetz.</p>
+          <a class="btn btn-danger float-right" href="{% url 'disconnect' user_id=user.id %}" data-confirm="Are you sure you want to delete your Fleetz account and disconnect it from your Twitter?">Disconnect</a>
+
+        </div>
+      </div>
+      
+    </div>
+
+    <div class="mx-auto col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="mb-0">Tweets Scheduled for Deletion{% if tweets %}({{ tweets|length }}){% endif %}</h4>
+        </div>
+
+        <div class="card-body">
+          <div class="list-group list-group-flush">
+            {% if tweets %}
+              
+              {% for tweet in tweets %}
+                {% include 'fleetz/single_tweet.html' with tweet=tweet %}
+              {% endfor %}
+
+            {% else %}
+              <p class="text-muted">You have no tweets scheduled for deletion at this time.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}

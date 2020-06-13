@@ -1,0 +1,108 @@
+{% load socialaccount %}
+{% load static sass_tags %}
+{% get_providers as socialaccount_providers %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/a22720141a.js" crossorigin="anonymous"></script>
+    {% block head-css %}
+      <link rel="stylesheet" href="{% sass_src 'stylesheets/app.scss' %}" rel="stylesheet" type="text/css" />
+    {% endblock %}
+
+    {% block head-js %}
+      <!-- Moment JS -->
+      <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment-with-locales.min.js" integrity="sha256-4HOrwHz9ACPZBxAav7mYYlbeMiAL0h6+lZ36cLNpR+E=" crossorigin="anonymous"></script>
+      <script defer src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+      <script defer src="{% static 'lib/bootstrap-4.5.0/dist/js/bootstrap.bundle.min.js' %}"></script>
+
+      <script type="module" src="{% static 'js/app.js' %}"></script>
+    {% endblock %}
+
+    <title>Fleetz .:!:. {% block title %}{% endblock %}</title>
+
+  </head>
+
+  <body>
+    {% block navbar %}
+      <nav class="navbar fixed-top sticky-top navbar-expand-lg navbar-dark bg-success">
+        <a class="navbar-brand ml-4" href="{% url 'home' %}">Fleetz .:!:.</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mr-4" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+
+            {% if user.is_authenticated %}
+
+              {% if user.is_superuser %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'admin:index' %}">Admin <i class="far fa-chess-king"></i></a>
+                </li>
+              {% endif %}
+
+              <li class="nav-item active">
+                <a class="nav-link" href="{% url 'user_profile' %}">Profile <i class="far fa-user-circle"></i></a>
+              </li>
+              <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'account_logout' %}">Log Out <i class="fas fa-sign-out-alt"></i></a>
+              </li>
+
+            {% else %}
+
+              {% if socialaccount_providers %}
+                {% for provider in socialaccount_providers %}
+                  {% if provider.id == "twitter" %}
+                    <li class="nav-item active">
+                      <a title="{{provider.name}}" class="nav-link socialaccount_provider {{provider.id}}" 
+                        href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                        Log In with {{provider.name}} <i class="fas fa-sign-in-alt"></i>
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+    {% endblock %}
+    
+    <div class="container">
+      <!-- Notifications -->
+      {% block messages %}
+        <div class="row">
+          <div class="col mt-2">
+            {% if messages %}
+                {% for message in messages %}
+                  <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% else %} class="alert alert-primary" {% endif %} class="alert alert-success" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      {% endblock %}
+
+      <!-- Main page content -->
+      {% block content %}
+      {% endblock %}
+    </div>
+
+    {% block footer %}
+      <footer class="footer mt-auto py-3">
+        <div class="container text-center">© 2020 Copyright: <a href="https://twitter.com/ro6ley"> @ro6ley</a>
+        </div>
+      </footer>
+    {% endblock %}
+
+  </body>
+</html>
