@@ -179,3 +179,4 @@ This project is licensed under the GNU General Public License v3.0.
 - http://craigbeck.io/2016/01/13/dokku-plus-dockerfile-deployments/
 - https://www.stavros.io/posts/deploy-django-dokku/
 - https://www.accordbox.com/blog/how-deploy-django-project-dokku-docker/
+- https://github.com/dokku/dokku/issues/1878
