@@ -17,7 +17,7 @@ from .models import FleetzUser
 
 class ProfileView(LoginRequiredMixin, FormView):
     """ This view allows a user to manage their profile, triggers and
-    disconnect your Twitter account.
+    disconnect their Twitter account.
     """
     template_name = "fleetz/profile.html"
     form_class = ProfileForm
@@ -54,7 +54,6 @@ class ProfileView(LoginRequiredMixin, FormView):
         if cleaned_data.get('minutes') is not None:
             fleetz_obj.minutes = form.cleaned_data['minutes']
         if cleaned_data.get('triggers'):
-            print(form.cleaned_data['triggers'])
             fleetz_obj.triggers = form.cleaned_data['triggers']
 
         fleetz_obj.save()
