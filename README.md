@@ -5,7 +5,9 @@
     <a href="https://github.com/ellerbrock/open-source-badge/"><img src="https://badges.frapsoft.com/os/v1/open-source.png?v=103" alt="Open Source Love"></a>
 </p>
 
-<center> <h1>FLEETZ .:!:.</h1> </center>
+<p align="center">
+  <h1>FLEETZ .:!:.</h1>
+</p>
 
 Fleetz is a bot that makes tweets disappear after 24 hours (-ish) just like stories on other platforms.
 
