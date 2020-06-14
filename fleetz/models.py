@@ -103,21 +103,25 @@ class FleetzUser(models.Model):
             if any(trigger == tweet.text[-1] for trigger in self.triggers):
                 # schedule tweets for deletion
                 deletion_time = tweet.created_at + timedelta(hours=self.hours, minutes=self.minutes)
-                self.delete_tweet(self.user.id, tweet.id, schedule=make_aware(deletion_time), creator=self.user, verbose_name=tweet.id)
+                delete_tweet(self.user.id, tweet.id, schedule=make_aware(deletion_time), creator=self.user, verbose_name=tweet.id)
                 count += 1
 
         logger.info(f"Scheduled {count} of {self.social_account.extra_data['screen_name']}'s tweets for deletion'")
 
-    @background
-    def delete_tweet(self, tweet_id):
-        """ This function deletes a single tweet. It runs as a background task.
 
-        Parameters
-        ----------
-        tweet_id : int, required
-            the id of the tweet to be deleted
-        """
-        self.api_object.destroy_status(tweet_id)
+@background
+def delete_tweet(user_id, tweet_id):
+    """ This function deletes a single tweet. It runs as a background task.
+
+    Parameters
+    ----------
+    user_id : int, required
+        the user id of the tweet owner
+    tweet_id : int, required
+        the id of the tweet to be deleted
+    """
+    fleetz_user = FleetzUser.objects.get(user_id=user_id)
+    fleetz_user.api_object.destroy_status(tweet_id)
 
 
 @receiver(user_signed_up)
