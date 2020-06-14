@@ -1,6 +1,11 @@
-![AWS Deployment](https://github.com/ro6ley/fleetz/workflows/AWS%20Deployment/badge.svg) [![HitCount](http://hits.dwyl.com/ro6ley/fleetz.svg)](http://hits.dwyl.com/ro6ley/fleetz)
+<p align="center">
+    <a href="#"><img src="https://github.com/ro6ley/fleetz/workflows/AWS%20Deployment/badge.svg" alt="AWS Deployment"></a>
+    <a href="http://hits.dwyl.com/ro6ley/fleetz"><img src="http://hits.dwyl.com/ro6ley/fleetz.svg" alt="Hits"></a>
+    <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="MIT License"></a>
+    <a href="https://github.com/ellerbrock/open-source-badge/"><img src="https://badges.frapsoft.com/os/v1/open-source.png?v=103" alt="Open Source Love"></a>
+</p>
 
-# FLEETZ .:!:.
+<center> <h1>FLEETZ .:!:.</h1> </center>
 
 Fleetz is a bot that makes tweets disappear after 24 hours (-ish) just like stories on other platforms.
 
