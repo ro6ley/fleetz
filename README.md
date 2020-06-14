@@ -1,4 +1,4 @@
-![AWS Deployment](https://github.com/ro6ley/fleetz/workflows/AWS%20Deployment/badge.svg)
+![AWS Deployment](https://github.com/ro6ley/fleetz/workflows/AWS%20Deployment/badge.svg) [![HitCount](http://hits.dwyl.com/ro6ley/fleetz.svg)](http://hits.dwyl.com/ro6ley/fleetz)
 
 # FLEETZ .:!:.
 
