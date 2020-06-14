@@ -33,7 +33,7 @@ This is the tech stack needed to run Fleetz:
 * [Django 2.2 LTS](https://www.djangoproject.com/) - The web framework.
 * [PostgreSQL](https://www.postgresql.org/) - The database (**REQUIRED**).
 * [Docker](https://www.docker.com/get-started) (Optional)
-* [Virtualenv](https://sourabhbajaj.com/mac-setup/Python/virtualenv.html)
+* [Dokku](http://dokku.viewdocs.io/dokku~v0.20.4/getting-started/installation/) (Optional)
 
 > NOTE: PostgreSQL is required as Fleetz uses ArrayFields which only work on PostgreSQL. If you intend to use another database, make sure you modify the field in [models](fleetz/models.py), and the field in [forms](fleetz/forms.py).
 
