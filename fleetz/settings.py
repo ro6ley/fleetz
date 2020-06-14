@@ -149,6 +149,47 @@ STATICFILES_FINDERS = (
 
 SITE_ID = 1
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(process)d %(thread)d %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'ERROR'
+        },
+        'fleetz': {
+            'level': 'DEBUG' if DEBUG else 'INFO',
+        },
+        'django': {
+            'level': 'INFO',
+        },
+        'django.template': {
+            'level': 'INFO',
+        },
+        'django.request': {
+            'handlers': [] if DEBUG else ['mail_admins'],
+            'level': 'ERROR',
+        },
+    }
+}
+
+
 # INSTALLED APPS SETTINGS
 # =======================
 
