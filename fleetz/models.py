@@ -89,27 +89,24 @@ class FleetzUser(models.Model):
                 tweet.text = re.sub(QUOTED_TWEET_REGEX, '', tweet.text)
             if str(tweet.id) not in scheduled_tweets and tweet.created_at >= since and tweet.text[:2] != 'RT':
                 return tweet
-        
+
         scheduled_tweets = [t.verbose_name for t in Task.objects.filter(creator_object_id=self.user.id)]
         count = 0
 
         logger.info(f"Fetching tweets for user_id: {self.social_account.extra_data['screen_name']}")
-        try:
-            tweets = tweepy.Cursor(self.api_object.user_timeline).items(25)
-            since = datetime.now() - timedelta(hours=settings.CRON_JOBS_INTERVALS_IN_HOURS)
-            filtered_tweets = filter(_filter_tweets, tweets)
 
-            for tweet in filtered_tweets:
-                if any(trigger == tweet.text[-1] for trigger in self.triggers):
-                    # schedule tweets for deletion
-                    deletion_time = tweet.created_at + timedelta(hours=self.hours, minutes=self.minutes)
-                    self.delete_tweet(self.user.id, tweet.id, schedule=make_aware(deletion_time), creator=self.user, verbose_name=tweet.id)
-                    count += 1
+        tweets = tweepy.Cursor(self.api_object.user_timeline).items(25)
+        since = datetime.now() - timedelta(hours=settings.CRON_JOBS_INTERVALS_IN_HOURS)
+        filtered_tweets = filter(_filter_tweets, tweets)
 
-            logger.info(f"Scheduled {count} of {self.social_account.extra_data['screen_name']}'s tweets for deletion'")
+        for tweet in filtered_tweets:
+            if any(trigger == tweet.text[-1] for trigger in self.triggers):
+                # schedule tweets for deletion
+                deletion_time = tweet.created_at + timedelta(hours=self.hours, minutes=self.minutes)
+                self.delete_tweet(self.user.id, tweet.id, schedule=make_aware(deletion_time), creator=self.user, verbose_name=tweet.id)
+                count += 1
 
-        except tweepy.error.TweepError as error:
-            logger.exception(error)
+        logger.info(f"Scheduled {count} of {self.social_account.extra_data['screen_name']}'s tweets for deletion'")
 
     @background
     def delete_tweet(self, tweet_id):
@@ -120,7 +117,6 @@ class FleetzUser(models.Model):
         tweet_id : int, required
             the id of the tweet to be deleted
         """
-        api = make_api_obj(user_id)
         self.api_object.destroy_status(tweet_id)
 
 
