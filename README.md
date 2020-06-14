@@ -1,3 +1,5 @@
+<h1 align="center">FLEETZ .:!:.</h1>
+
 <p align="center">
     <a href="#"><img src="https://github.com/ro6ley/fleetz/workflows/AWS%20Deployment/badge.svg" alt="AWS Deployment"></a>
     <a href="http://hits.dwyl.com/ro6ley/fleetz"><img src="http://hits.dwyl.com/ro6ley/fleetz.svg" alt="Hits"></a>
@@ -7,10 +9,8 @@
 </p>
 
 <p align="center">
-  <h1>FLEETZ .:!:.</h1>
+  <b>Fleetz</b> is a bot that makes tweets disappear after 24 hours (-ish) just like stories on other platforms.
 </p>
-
-Fleetz is a bot that makes tweets disappear after 24 hours (-ish) just like stories on other platforms.
 
 ---
 
