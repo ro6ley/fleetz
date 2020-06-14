@@ -3,6 +3,7 @@
     <a href="http://hits.dwyl.com/ro6ley/fleetz"><img src="http://hits.dwyl.com/ro6ley/fleetz.svg" alt="Hits"></a>
     <a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="MIT License"></a>
     <a href="https://github.com/ellerbrock/open-source-badge/"><img src="https://badges.frapsoft.com/os/v1/open-source.png?v=103" alt="Open Source Love"></a>
+    <img src="https://img.shields.io/badge/Status-BETA-yellow" alt="Status">
 </p>
 
 <p align="center">
