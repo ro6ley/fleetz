@@ -200,13 +200,13 @@ CRON_JOBS_INTERVALS_IN_HOURS = 1
 
 # allauth
 # -------
-LOGIN_REDIRECT_URL = '/profile/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/profile/'
 
 # django-background-tasks
 # -----------------------
-MAX_ATTEMPTS = 5
 BACKGROUND_TASK_RUN_ASYNC = True
+MAX_ATTEMPTS = 5
 
 # django-cron
 # -----------
