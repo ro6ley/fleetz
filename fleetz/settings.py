@@ -206,6 +206,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 # django-background-tasks
 # -----------------------
 MAX_ATTEMPTS = 5
+BACKGROUND_TASK_RUN_ASYNC = True
 
 # django-cron
 # -----------
