@@ -51,6 +51,7 @@ The following environment variables are needed to be set when running the projec
 * `CONSUMER_API_SECRET_KEY` (optional) - as provided by Twitter on the developer portal, configuring a Twitter App as a Social App will provide it
 * `DJANGO_DEBUG` - see [Django Docs: Debug](https://docs.djangoproject.com/en/3.0/ref/settings/#debug)
 * `DJANGO_SECRET_KEY` - see [Django Docs: Secret Key](https://docs.djangoproject.com/en/3.0/ref/settings/#secret-key)
+* `SENTRY_DSN` - for application monitoring via [Sentry](https://docs.sentry.io)
 
 ### Local Development
 
