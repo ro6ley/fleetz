@@ -6,7 +6,7 @@ from django.db.utils import ProgrammingError, OperationalError
 import tweepy
 
 # The regex used to identify quoted replies and tweets containing media
-QUOTED_TWEET_REGEX = re.compile(r'(?P<t_co>\shttps:\/\/t.co\/)(?P<nonce>[a-zA-Z0-9]{0,15})$', flags=re.M)
+QUOTED_TWEET_REGEX = re.compile(r'(?P<t_co>\shttps:\/\/t.co\/)(?P<nonce>[a-zA-Z0-9]{0,15})', flags=re.M)
 
 """
 An app must be created on Twitter before interacting with the API.
