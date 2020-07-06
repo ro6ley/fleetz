@@ -85,9 +85,8 @@ class FleetzUser(models.Model):
         def _filter_tweets(tweet):
             """ Use Regex to extract text from quoted replies, then proceed with the filtering
             """
-            if tweet.is_quote_status or tweet.entities.get('media'):
-                tweet.text = re.sub(QUOTED_TWEET_REGEX, '', tweet.text)
             if str(tweet.id) not in scheduled_tweets and tweet.created_at >= since and tweet.text[:2] != 'RT':
+                tweet.text = re.sub(QUOTED_TWEET_REGEX, '', tweet.text)
                 return tweet
 
         scheduled_tweets = [t.verbose_name for t in Task.objects.filter(creator_object_id=self.user.id)]
