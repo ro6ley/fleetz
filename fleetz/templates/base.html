@@ -83,7 +83,7 @@
           <div class="col mt-2">
             {% if messages %}
                 {% for message in messages %}
-                  <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% else %} class="alert alert-primary" {% endif %} class="alert alert-success" role="alert">
+                  <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% else %} class="alert alert-primary" {% endif %} role="alert">
                     {{ message }}
                   </div>
                 {% endfor %}
