@@ -13,7 +13,7 @@
         </div>
 
         <div class="card-body">
-          <form class="form" method="POST" action="/profile/" role="form" autocomplete="off">
+          <form class="form" method="POST" action="{% url 'user_profile' %}" role="form" autocomplete="off">
             {% csrf_token %}
             <div class="row">
               <div class="col d-flex align-items-center justify-content-center">
@@ -106,7 +106,43 @@
     <div class="mx-auto col-lg-6">
       <div class="card">
         <div class="card-header">
-          <h4 class="mb-0">Tweets Scheduled for Deletion{% if tweets %}({{ tweets|length }}){% endif %}</h4>
+          <div class="row">
+            <div class="col">
+              <h4 class="mb-0">Deletion Queue{% if tweets %}({{ tweets|length }}){% endif %}</h4>
+            </div>
+            <div class="col">
+              <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#tweetUrlModal" data-placement="top" title="Manually add a tweet to the deletion schedule.">+</button>
+
+              <!-- Tweet URL Modal -->
+              <div class="modal fade" id="tweetUrlModal" tabindex="-1" role="dialog" aria-labelledby="tweetUrlModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="tweetUrlModalLabel">Manually schedule a tweet</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <form class="form" method="POST" action="{% url 'schedule_tweet' %}">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        Enter the tweet URL below to manually schedule it for deletion.
+                        <input type="hidden" id="twitterUsername" name="twitterUsername" value="{{ user_extra_data.twitter_username }}">
+                        <div class="form-group">
+                          <input type="text" class="form-control" id="tweetUrl" name="tweetUrl" placeholder="https://twitter.com/{{ user_extra_data.twitter_username }}/status/....">
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dismiss</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </div>
+                    </form>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="card-body">
