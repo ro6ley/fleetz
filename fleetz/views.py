@@ -1,18 +1,22 @@
 from datetime import datetime, timedelta
+import re
 
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.timezone import make_aware
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import FormView
 
 from allauth.socialaccount.models import SocialAccount, SocialToken
 from background_task.models import Task
+from tweepy.error import TweepError
 
-from .forms import ProfileForm
-from .models import FleetzUser
+from fleetz.forms import ProfileForm
+from fleetz.models import FleetzUser, delete_tweet
+from fleetz.core import TWEET_URL_REGEX
 
 
 class ProfileView(LoginRequiredMixin, FormView):
@@ -63,23 +67,44 @@ class ProfileView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
 
-class ProfileFormView(FormView):
+class ProfileFormView(LoginRequiredMixin, FormView):
     form_class = ProfileForm
     template_name = "fleetz/profile_form.html"
     success_url = "/profile/"
 
 
-class DisconnectView(View):
+class DisconnectView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         if user_id := kwargs['user_id']:
             User.objects.get(id=user_id).delete()
             return HttpResponseRedirect('https://twitter.com/settings/applications/17228896')
 
-        messages.error(self.request, 'Something went wrong. Try again.')
+        messages.error(self.request, 'Something went wrong. Try again.', extra_tags='danger')
         return HttpResponseRedirect(reverse('user_profile'))
 
 
-class UnscheduleTweetView(View):
+class ScheduleView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('tweetUrl') and request.POST.get('twitterUsername'):
+
+            if match := re.search(TWEET_URL_REGEX, request.POST['tweetUrl']):
+                tweet_details = match.groupdict()
+
+                if tweet_details['username'] == request.POST['twitterUsername']:
+                    schedule_tweet(self.request, tweet_details['tweet_id'])
+
+                elif tweet_details['username'] != request.POST['twitterUsername']:
+                    messages.error(self.request, 'That is not your tweet.', extra_tags='danger')
+
+            else:
+                messages.error(self.request, 'Invalid tweet URL.', extra_tags='danger')
+        else:
+            messages.error(self.request, 'Something went wrong. Please try again.', extra_tags='danger')
+
+        return HttpResponseRedirect(reverse('user_profile'))
+
+
+class UnscheduleTweetView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         if tweet_id := kwargs.get('tweet_id'):
             task = Task.objects.get(verbose_name=str(tweet_id))
@@ -87,7 +112,8 @@ class UnscheduleTweetView(View):
                 task.delete()
                 messages.success(self.request, 'Tweet removed from deletion schedule.')
             else:
-                messages.error(self.request, 'Tweet not found.')
+                messages.error(self.request, 'Tweet not found.', extra_tags='danger')
+
         return HttpResponseRedirect(reverse('user_profile'))
 
 
@@ -95,3 +121,29 @@ class HomeView(TemplateView):
     """ This is the landing page of the application
     """
     template_name = "fleetz/home.html"
+
+
+def schedule_tweet(request, tweet_id):
+    """ This function takes in a single tweet id and schedules it's deletion.
+    """
+    try:
+        tweet_task = Task.objects.get(verbose_name=tweet_id)
+        messages.warning(request, 'Tweet is already scheduled for deletion.')
+
+    except Task.DoesNotExist:
+        fleetz_user = FleetzUser.objects.get(user=request.user)
+
+        try:
+            tweet = fleetz_user.api_object.get_status(tweet_id)
+
+            deletion_time = tweet.created_at + timedelta(hours=fleetz_user.hours, minutes=fleetz_user.minutes)
+            delete_tweet(request.user.id, tweet.id, schedule=make_aware(deletion_time), creator=request.user, verbose_name=tweet.id)
+
+            messages.success(request, 'Tweet scheduled for deletion successfully.')
+
+        except TweepError as e:
+            msg = 'We ran into an error scheduling that tweet. Please check and try again'
+            if e.response.status_code == 404:
+                msg = 'Tweet not found. Please check and try again'
+
+            messages.error(request, msg, extra_tags='danger')
