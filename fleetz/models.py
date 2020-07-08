@@ -17,7 +17,7 @@ from django.dispatch import receiver
 from django.utils.timezone import make_aware
 import tweepy
 
-from .core import AUTH, QUOTED_TWEET_REGEX
+from fleetz.core import AUTH, QUOTED_TWEET_REGEX
 
 
 logger = logging.getLogger('fleetz')
