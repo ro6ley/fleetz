@@ -18,6 +18,11 @@ class Fleetz {
         }
       }
     });
+
+    // setup tooltip for manual schedule button
+    $(function () {
+      $('[data-toggle="modal"]').tooltip()
+    });
   }
 }
 
