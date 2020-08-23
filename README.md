@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <b>Fleetz</b> is a bot that makes tweets disappear after 24 hours (-ish) just like stories on other platforms.
+  <b>Fleetz</b> is a bot that lets you post self-destructing tweets.
 </p>
 
 ---
