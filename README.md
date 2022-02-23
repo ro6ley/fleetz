@@ -77,7 +77,7 @@ The following environment variables are needed to be set when running the projec
     $ sudo su - postgres -c 'createdb fleetz_dev'
     ```
 
-* check that you can connect to the postgresql database as your regular shell user (not indigo user) by means of password authentication:
+* check that you can connect to the postgresql database as your regular shell user (not fleetz user) by means of password authentication:
 
     ```
     $ psql -h localhost fleetz_dev fleetz
